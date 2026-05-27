@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASE H-01 — 交通外傷・腹腔内出血</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f0e8; --surface:#faf7f2; --surface2:#ede8df;
+  --border:#c8bfaa; --border2:#a89880;
+  --ink:#1a1208; --ink2:#4a3f2f; --ink3:#7a6a55;
+  --red:#c0392b; --amber:#d97706; --green:#166534; --blue:#1d4ed8;
+  --accent:#ff6b35;
+  --mono:'Space Mono',monospace; --sans:'Noto Sans JP',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5;}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1;}
+/* HEADER */
+.header{padding:28px 0 24px;border-bottom:2px solid var(--border2);margin-bottom:28px;}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.back-link{font-family:var(--mono);font-size:11px;color:var(--ink3);text-decoration:none;padding:4px 10px;border:1px solid var(--border);border-radius:3px;}
+.back-link:hover{background:var(--surface2);}
+.setting-badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:4px 12px;border-radius:2px;background:rgba(255,107,53,0.15);color:#ff6b35;border:1px solid #ff6b35;}
+.diff-badge{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-left:auto;}
+.case-num{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-bottom:6px;}
+.case-title{font-size:24px;font-weight:900;line-height:1.3;color:var(--ink);margin-bottom:8px;}
+.case-patient{font-size:13px;color:var(--ink2);}
+/* PROGRESS */
+.progress-bar{display:flex;gap:4px;margin-bottom:28px;flex-wrap:wrap;}
+.prog-step{flex:1;min-width:60px;height:28px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;letter-spacing:.5px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);color:var(--ink3);transition:.2s;}
+.prog-step.done{background:var(--accent);color:white;border-color:var(--accent);}
+/* PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:16px;overflow:hidden;}
+.panel-head{padding:14px 18px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
+.panel-head h3{font-size:13px;font-weight:700;letter-spacing:.5px;flex:1;}
+.panel-icon{font-size:16px;}
+.panel-arrow{font-family:var(--mono);font-size:12px;color:var(--ink3);}
+.panel-body{padding:18px;display:none;}
+.panel.open .panel-body{display:block;}
+.panel.open .panel-arrow::after{content:'▲';}
+.panel-arrow::after{content:'▼';}
+/* UNLOCK BUTTON */
+.unlock-btn{display:block;width:100%;padding:14px;border:2px dashed var(--border);background:transparent;border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--ink3);cursor:pointer;margin-bottom:16px;transition:.2s;text-align:center;}
+.unlock-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--surface2);}
+/* VITALS GRID */
+.vitals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
+.vital-item{background:var(--surface2);border-radius:4px;padding:10px 12px;}
+.vital-k{font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:3px;}
+.vital-v{font-size:14px;font-weight:700;color:var(--ink);}
+/* ABCDE */
+.abcde-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.abcde-row:last-child{border:none;}
+.abcde-key{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);flex-shrink:0;width:22px;}
+.abcde-val{font-size:13px;color:var(--ink2);line-height:1.7;}
+/* HX */
+.hx-row{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);}
+.hx-row:last-child{border:none;}
+.hx-key{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink3);width:28px;flex-shrink:0;}
+.hx-val{font-size:13px;color:var(--ink2);line-height:1.7;}
+/* EXAM/LABS */
+.pre-text{font-size:13px;color:var(--ink2);line-height:1.9;white-space:pre-wrap;}
+/* POCUS GRID */
+.pocus-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pocus-btn{padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;text-align:left;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink2);transition:.2s;}
+.pocus-btn:hover{border-color:var(--accent);color:var(--accent);background:white;}
+.pocus-result{display:none;margin-top:8px;padding:14px;background:white;border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--ink2);line-height:1.8;border-left:3px solid var(--accent);}
+/* DX/MGMT */
+.dx-box{background:rgba(192,57,43,0.07);border:1px solid rgba(192,57,43,0.25);border-radius:6px;padding:16px;margin-bottom:12px;}
+.dx-label{font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:6px;}
+.dx-text{font-size:15px;font-weight:700;color:var(--ink);}
+.mgmt-text{font-size:13px;color:var(--ink2);line-height:2;white-space:pre-wrap;}
+/* SCORE SHEET */
+.score-sheet{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px;}
+.score-title{font-family:var(--mono);font-size:13px;letter-spacing:1px;color:var(--ink3);margin-bottom:16px;}
+.score-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.score-row:last-child{border:none;}
+.score-label{flex:1;font-size:13px;color:var(--ink2);}
+.score-pts{font-family:var(--mono);font-size:12px;color:var(--ink3);width:30px;text-align:right;flex-shrink:0;}
+.score-check{display:flex;gap:10px;flex-shrink:0;}
+.score-check label{font-size:11px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.score-total{margin-top:14px;padding:12px;background:var(--surface2);border-radius:4px;text-align:center;font-family:var(--mono);font-size:14px;font-weight:700;}
+/* KEY FINDING */
+.key-alert{background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.3);border-radius:6px;padding:14px;margin-bottom:16px;}
+.key-alert-label{font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:1px;margin-bottom:6px;}
+.key-alert-text{font-size:13px;color:var(--ink);font-weight:600;}
+@media(max-width:600px){
+  .pocus-grid{grid-template-columns:1fr;}
+  .vitals-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <a class="back-link" href="index.html">← 症例一覧</a>
+    <span class="setting-badge">ドクターヘリ（病院前救護）</span>
+    <span class="diff-badge">高難度</span>
+  </div>
+  <div class="case-num">CASE H-01</div>
+  <div class="case-title">交通外傷・腹腔内出血</div>
+  <div class="case-patient">40歳 · 男性</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar" id="prog">
+  <div class="prog-step" id="p0">主訴</div>
+  <div class="prog-step" id="p1">バイタル</div>
+  <div class="prog-step" id="p2">ABCDE</div>
+  <div class="prog-step" id="p3">OPQRST</div>
+  <div class="prog-step" id="p4">AMPLE</div>
+  <div class="prog-step" id="p5">身体所見</div>
+  <div class="prog-step" id="p6">検査</div>
+  <div class="prog-step" id="p7">POCUS</div>
+  <div class="prog-step" id="p8">診断/治療</div>
+</div>
+
+<!-- CHIEF COMPLAINT (auto-shown) -->
+<div class="panel open" id="chief-panel">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">📋</span>
+    <h3>主訴・状況</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body">
+    <div style="font-size:15px;font-weight:700;color:var(--ink);line-height:1.8;padding:4px 0;">バイク対自動車衝突後、意識低下・腹部打撲</div>
+  </div>
+</div>
+
+<!-- VITALS -->
+<button class="unlock-btn" onclick="unlockSection('vitals-panel','p1')">▶ バイタルサインを確認する</button>
+<div class="panel" id="vitals-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">📊</span>
+    <h3>バイタルサイン</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;">
+    <div class="vitals-grid"><div class="vital-item"><div class="vital-k">RR</div><div class="vital-v">28回/分</div></div><div class="vital-item"><div class="vital-k">SpO2</div><div class="vital-v">94%（room air）</div></div><div class="vital-item"><div class="vital-k">HR</div><div class="vital-v">128bpm（微弱）</div></div><div class="vital-item"><div class="vital-k">BP</div><div class="vital-v">82/50 mmHg</div></div><div class="vital-item"><div class="vital-k">GCS</div><div class="vital-v">E3V4M5（計12点）</div></div><div class="vital-item"><div class="vital-k">体温</div><div class="vital-v">36.2°C</div></div><div class="vital-item"><div class="vital-k">CRT</div><div class="vital-v">>2秒</div></div></div>
+  </div>
+</div>
+
+<!-- ABCDE -->
+<button class="unlock-btn" onclick="unlockSection('abcde-panel','p2')" id="btn-abcde" style="display:none;">▶ ABCDE初期評価を行う</button>
+<div class="panel" id="abcde-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">🔴</span>
+    <h3>ABCDE初期評価</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;"><div class="abcde-row"><span class="abcde-key">A</span><span class="abcde-val">声出せる。気道開通。</span></div><div class="abcde-row"><span class="abcde-key">B</span><span class="abcde-val">呼吸数28回/分、胸郭運動左右差なし、SpO2 94%。呼吸音：両側入る（エンジン騒音で確認困難→エコー優先）。</span></div><div class="abcde-row"><span class="abcde-key">C</span><span class="abcde-val">末梢冷感あり・冷汗あり・蒼白。脈拍128回/分（微弱）。外出血：右下腿擦過傷（軽微）。CRT >2秒。BP 82/50。腹部打撲痕あり。</span></div><div class="abcde-row"><span class="abcde-key">D</span><span class="abcde-val">GCS E3V4M5=12点。瞳孔：両側3mm、対光反射あり。片麻痺なし。</span></div><div class="abcde-row"><span class="abcde-key">E</span><span class="abcde-val">体温36.2°C。ヘルメット・プロテクター着用（除去済み）。外傷機転：時速60km相当の衝突。</span></div></div>
+</div>
+
+<!-- OPQRST -->
+<button class="unlock-btn" onclick="unlockSection('opqrst-panel','p3')" id="btn-opqrst" style="display:none;">▶ OPQRST問診を行う</button>
+<div class="panel" id="opqrst-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">💬</span>
+    <h3>OPQRST問診</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;"><div class="hx-row"><span class="hx-key">O</span><span class="hx-val">衝突と同時。</span></div><div class="hx-row"><span class="hx-key">P</span><span class="hx-val">体動で悪化、安静で変わらず。</span></div><div class="hx-row"><span class="hx-key">Q</span><span class="hx-val">腹部全体の鈍痛、左肩への放散痛（Kehr徴候）。</span></div><div class="hx-row"><span class="hx-key">R</span><span class="hx-val">嘔気あり。</span></div><div class="hx-row"><span class="hx-key">S</span><span class="hx-val">10/10。</span></div><div class="hx-row"><span class="hx-key">T</span><span class="hx-val">持続性。</span></div></div>
+</div>
+
+<!-- AMPLE -->
+<button class="unlock-btn" onclick="unlockSection('ample-panel','p4')" id="btn-ample" style="display:none;">▶ AMPLE歴を確認する</button>
+<div class="panel" id="ample-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">💊</span>
+    <h3>AMPLE歴</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;"><div class="hx-row"><span class="hx-key">A</span><span class="hx-val">なし</span></div><div class="hx-row"><span class="hx-key">M</span><span class="hx-val">なし</span></div><div class="hx-row"><span class="hx-key">P</span><span class="hx-val">なし</span></div><div class="hx-row"><span class="hx-key">L</span><span class="hx-val">本日朝食</span></div><div class="hx-row"><span class="hx-key">E</span><span class="hx-val">バイクで走行中に乗用車と衝突、路上に転倒</span></div></div>
+</div>
+
+<!-- PHYSICAL EXAM -->
+<button class="unlock-btn" onclick="unlockSection('exam-panel','p5')" id="btn-exam" style="display:none;">▶ 身体診察を行う</button>
+<div class="panel" id="exam-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">🩺</span>
+    <h3>身体所見</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;">
+    <p class="pre-text">腹部：全体的に圧痛（+）、左上腹部優位。筋性防御（+）。腹部膨満なし（現時点）。左肩：叩打痛（+）。骨盤：動揺性なし。</p>
+  </div>
+</div>
+
+<!-- LABS -->
+<button class="unlock-btn" onclick="unlockSection('labs-panel','p6')" id="btn-labs" style="display:none;">▶ 検査結果を確認する</button>
+<div class="panel" id="labs-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">🧪</span>
+    <h3>検査所見</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;">
+    <p class="pre-text">【採血困難・ヘリ内では施行せず】
+現場では採血より止血・搬送優先。
+INR・Hb・血小板は病院到着後に確認予定。</p>
+  </div>
+</div>
+
+<!-- POCUS -->
+<button class="unlock-btn" onclick="unlockSection('pocus-panel','p7')" id="btn-pocus" style="display:none;">▶ POCUS（エコー検査）を施行する</button>
+<div class="panel" id="pocus-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">🔊</span>
+    <h3>POCUS（エコー検査）</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;">
+    <p style="font-size:11px;color:var(--ink3);margin-bottom:14px;font-family:var(--mono);">準決勝モード：エコー描出時にコメントを声に出してください</p>
+    <div class="pocus-grid">
+      <button class="pocus-btn" onclick="showPocus(this,'plax')">傍胸骨長軸（PLAX）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'psax')">傍胸骨短軸（PSAX）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'a4c')">心尖部四腔断面（A4C）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'ivc')">下大静脈（IVC）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'fast')">FAST（腹腔内出血）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'lung')">肺エコー</button>
+      <button class="pocus-btn" onclick="showPocus(this,'ao')">腹部大動脈</button>
+      <button class="pocus-btn" onclick="showPocus(this,'gb')">胆嚢</button>
+      <button class="pocus-btn" onclick="showPocus(this,'kid')">腎臓</button>
+      <button class="pocus-btn" onclick="showPocus(this,'dvt')">下肢深部静脈（DVT）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'knee')">膝（膝蓋上嚢）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'shldr')">肩（上腕二頭筋腱）</button>
+      <button class="pocus-btn" onclick="showPocus(this,'thyr')">甲状腺</button>
+    </div>
+    <div id="pocus-results"></div>
+  </div>
+</div>
+
+<!-- DIAGNOSIS/MANAGEMENT -->
+<button class="unlock-btn" onclick="unlockSection('dx-panel','p8')" id="btn-dx" style="display:none;">▶ 診断と初期治療方針を決定する</button>
+<div class="panel" id="dx-panel" style="display:none;">
+  <div class="panel-head" onclick="togglePanel(this)">
+    <span class="panel-icon">✅</span>
+    <h3>診断・初期治療方針</h3>
+    <span class="panel-arrow"></span>
+  </div>
+  <div class="panel-body open" style="display:block;">
+    <div class="key-alert">
+      <div class="key-alert-label">KEY POCUS FINDING</div>
+      <div class="key-alert-text">FAST（モリソン窩陽性）・IVC虚脱</div>
+    </div>
+    <div class="dx-box">
+      <div class="dx-label">DIAGNOSIS</div>
+      <div class="dx-text">外傷性脾損傷による腹腔内出血（eFAST陽性）</div>
+    </div>
+    <div class="dx-label" style="font-family:var(--mono);font-size:11px;color:var(--ink3);letter-spacing:1px;margin-bottom:8px;">MANAGEMENT</div>
+    <p class="mgmt-text">①輸液路2本確保（大口径）→細胞外液全開投与
+②ドクターヘリにて外傷センター（手術室直行）へ緊急搬送
+③搬送中：輸血準備要請（O型Rh+）、外科チームへ事前連絡
+④到着次第：造影CT→緊急開腹または血管内治療（脾動脈塞栓術）
+⑤大量輸血プロトコル（MTP）起動</p>
+  </div>
+</div>
+
+<!-- SCORE SHEET -->
+<div id="score-section" style="display:none;margin-top:28px;">
+  <div class="score-sheet">
+    <div class="score-title">📝 自己採点シート（合計20点）</div>
+    
+          <div class="score-row">
+            <div class="score-label">自己紹介・感染対策</div>
+            <div class="score-pts">1点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_自己紹介・感染対" value="full"> 満点</label>
+              <label><input type="radio" name="s_自己紹介・感染対" value="partial"> 部分</label>
+              <label><input type="radio" name="s_自己紹介・感染対" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">ABCDE初期評価の実施</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_ABCDE初期評" value="full"> 満点</label>
+              <label><input type="radio" name="s_ABCDE初期評" value="partial"> 部分</label>
+              <label><input type="radio" name="s_ABCDE初期評" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">ショックの認識（循環血液量減少性）</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_ショックの認識（" value="full"> 満点</label>
+              <label><input type="radio" name="s_ショックの認識（" value="partial"> 部分</label>
+              <label><input type="radio" name="s_ショックの認識（" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">eFAST施行・モリソン窩陽性の確認</div>
+            <div class="score-pts">3点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_eFAST施行・" value="full"> 満点</label>
+              <label><input type="radio" name="s_eFAST施行・" value="partial"> 部分</label>
+              <label><input type="radio" name="s_eFAST施行・" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">エコーコメント声出し（IVC虚脱）</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_エコーコメント声" value="full"> 満点</label>
+              <label><input type="radio" name="s_エコーコメント声" value="partial"> 部分</label>
+              <label><input type="radio" name="s_エコーコメント声" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">外傷センター直接搬送の判断</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_外傷センター直接" value="full"> 満点</label>
+              <label><input type="radio" name="s_外傷センター直接" value="partial"> 部分</label>
+              <label><input type="radio" name="s_外傷センター直接" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">輸液路確保・輸血要請</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_輸液路確保・輸血" value="full"> 満点</label>
+              <label><input type="radio" name="s_輸液路確保・輸血" value="partial"> 部分</label>
+              <label><input type="radio" name="s_輸液路確保・輸血" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">大量輸血プロトコル言及</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_大量輸血プロトコ" value="full"> 満点</label>
+              <label><input type="radio" name="s_大量輸血プロトコ" value="partial"> 部分</label>
+              <label><input type="radio" name="s_大量輸血プロトコ" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">診断・治療方針の説明</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_診断・治療方針の" value="full"> 満点</label>
+              <label><input type="radio" name="s_診断・治療方針の" value="partial"> 部分</label>
+              <label><input type="radio" name="s_診断・治療方針の" value="zero" checked> 0</label>
+            </div>
+          </div>
+          <div class="score-row">
+            <div class="score-label">全体的な態度・チームワーク</div>
+            <div class="score-pts">2点</div>
+            <div class="score-check">
+              <label><input type="radio" name="s_全体的な態度・チ" value="full"> 満点</label>
+              <label><input type="radio" name="s_全体的な態度・チ" value="partial"> 部分</label>
+              <label><input type="radio" name="s_全体的な態度・チ" value="zero" checked> 0</label>
+            </div>
+          </div>
+    <div class="score-total">
+      合計：<span id="total-score">0</span> / 20点
+      <button onclick="calcScore()" style="margin-left:12px;padding:4px 14px;border:1px solid var(--border);border-radius:3px;background:var(--surface2);font-size:12px;cursor:pointer;font-family:var(--sans);">集計</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+const pocusData = {
+  plax: "【傍胸骨長軸（PLAX）】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。\n声出しコメント：「傍胸骨長軸像です。大動脈弁・僧帽弁の開閉、左室収縮能、大動脈径を評価します。」",
+  psax: "【傍胸骨短軸（PSAX）】\n乳頭筋レベルで評価。Dシェイプ（心室中隔左方偏位）の有無を確認。\n声出しコメント：「傍胸骨短軸像です。乳頭筋レベルで右室・左室の比率とDシェイプの有無を評価します。」",
+  a4c: "【心尖部四腔断面（A4C）】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「心尖部四腔断面です。左右心室・心房の大きさ、壁運動、弁の評価を行います。」",
+  ivc: "【下大静脈（IVC）】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「IVC縦断像で径と呼吸変動を確認します。」",
+  fast: "【FAST（腹腔内出血評価）】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「FASTです。モリソン窩（右上腹部）、脾腎間隙（左上腹部）、骨盤・膀胱周囲、心窩部の順に液体貯留を評価します。」",
+  lung: "【肺エコー】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「前胸部双側でLung slidingとBラインを確認します。」",
+  ao: "【腹部大動脈】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「腹部大動脈を横断・縦断で確認します。正常径は3cm未満です。」",
+  gb: "【胆嚢】\n胆嚢：腫大・壁肥厚・結石の有無を確認。Sonographic Murphy signを評価。\n声出しコメント：「胆嚢を評価します。壁肥厚・結石・Murphy徴候を確認します。」",
+  kid: "【腎臓（両側）】\n両腎：大きさ・皮質輝度・水腎症・血流を確認。\n声出しコメント：「両側腎臓を評価します。水腎症・腫大・エコー輝度を確認します。」",
+  dvt: "【下肢深部静脈（DVT）】\nモリソン窩（右上腹部）：肝腎間隙に無エコー領域（液体貯留）陽性。脾周囲（左上腹部）：脾腎間隙にも液体貯留あり。心窩部：心嚢液なし、右室正常。IVC：著明に虚脱（径<8mm）、呼吸変動大→循環血液量著明減少。肺：Lung sliding両側あり（気胸なし）。\n声出しコメント：「膝窩静脈の2 region testを実施します。プローブで圧迫し、血管が虚脱するかを確認します。」",
+  knee: "【膝（膝蓋上嚢）】\n縦断・横断で膝蓋上嚢内の関節液貯留・結晶を評価。\n声出しコメント：「膝蓋上嚢を縦断・横断で評価します。関節液の性状と結晶エコーを確認します。」",
+  shldr: "【肩（上腕二頭筋長頭腱）】\n上腕二頭筋長頭腱：腱炎・断裂・滑液包炎を評価。\n声出しコメント：「上腕二頭筋長頭腱を縦断・横断で評価します。腱炎・断裂・滑液包液貯留を確認します。」",
+  thyr: "【甲状腺】\n甲状腺：縦断・横断で腫大・結節・血流を評価。\n声出しコメント：「甲状腺を縦断・横断で評価します。腫大・結節・血流を確認します。」"
+};
+
+let step = 0;
+const steps = ['vitals-panel','abcde-panel','opqrst-panel','ample-panel','exam-panel','labs-panel','pocus-panel','dx-panel'];
+const btns =  ['btn-abcde','btn-opqrst','btn-ample','btn-exam','btn-labs','btn-pocus','btn-dx'];
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('p0').classList.add('done');
+  document.getElementById('vitals-panel').style.display = '';
+  // Show first unlock btn
+  showNextBtn();
+});
+
+function showNextBtn() {
+  if (step < btns.length) {
+    let b = document.getElementById(btns[step]);
+    if(b) b.style.display='block';
+  }
+  if (step >= 7) {
+    document.getElementById('score-section').style.display = 'block';
+  }
+}
+
+function unlockSection(panelId, progId) {
+  document.getElementById(panelId).style.display = '';
+  document.getElementById(progId).classList.add('done');
+  // hide the button
+  if(step < btns.length) {
+    let b = document.getElementById(btns[step]);
+    if(b) b.style.display='none';
+  }
+  step++;
+  showNextBtn();
+  // scroll
+  document.getElementById(panelId).scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function togglePanel(head) {
+  const panel = head.parentElement;
+  const body = panel.querySelector('.panel-body');
+  if(body.style.display==='none'||!body.style.display) {
+    body.style.display='block';
+  } else {
+    body.style.display='none';
+  }
+}
+
+function showPocus(btn, key) {
+  const container = document.getElementById('pocus-results');
+  const existing = document.getElementById('pocus-' + key);
+  if(existing) { existing.remove(); btn.style.borderColor=''; return; }
+  const div = document.createElement('div');
+  div.className = 'pocus-result';
+  div.id = 'pocus-' + key;
+  div.style.display = 'block';
+  div.innerHTML = (pocusData[key] || '所見なし').replace(/\n/g,'<br>');
+  container.appendChild(div);
+  btn.style.borderColor = 'var(--accent)';
+  btn.style.color = 'var(--accent)';
+}
+
+function calcScore() {
+  let total = 0;
+  document.querySelectorAll('.score-check').forEach((check,i) => {
+    const sel = check.querySelector('input:checked');
+    const pts = parseInt(document.querySelectorAll('.score-pts')[i].textContent) || 0;
+    if(sel && sel.value === 'full') total += pts;
+    else if(sel && sel.value === 'partial') total += Math.floor(pts/2);
+  });
+  document.getElementById('total-score').textContent = total;
+}
+</script>
+</body>
+</html>

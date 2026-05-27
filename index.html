@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POCUS Training — 病前救護・災害医療 症例集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #1a1e26;
+    --border: #252a35;
+    --accent-red: #e63946;
+    --accent-orange: #f4a261;
+    --accent-blue: #4cc9f0;
+    --accent-green: #2ec4b6;
+    --accent-yellow: #ffd60a;
+    --text-primary: #f0f2f5;
+    --text-secondary: #8892a4;
+    --text-dim: #4a5568;
+    --heli: #ff6b35;
+    --disaster: #c77dff;
+    --hospital: #4cc9f0;
+    --home: #2ec4b6;
+    --outpatient: #f4a261;
+    --emergency: #e63946;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND GRID ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(76,201,240,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(76,201,240,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(230,57,70,0.08) 0%, transparent 100%);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-red);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6vw, 80px);
+    letter-spacing: 4px;
+    line-height: 0.9;
+    background: linear-gradient(135deg, #f0f2f5 0%, #8892a4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-sub {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  .header-meta {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .header-meta .version {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  .header-meta .spec {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+  }
+
+  /* ── KNOWLEDGE BANNER ── */
+  .knowledge-banner {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(90deg, rgba(255,107,53,0.15), rgba(199,125,255,0.15));
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+  }
+
+  .knowledge-banner-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .kb-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .kb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .kb-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* ── MAIN ── */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 40px 80px;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    margin-top: 60px;
+  }
+
+  .section-heading:first-child {
+    margin-top: 0;
+  }
+
+  .section-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+  }
+
+  .section-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-left: auto;
+  }
+
+  .section-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── KNOWLEDGE CARD (before cases) ── */
+  .knowledge-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+  }
+
+  .knowledge-block h3 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .knowledge-item {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .knowledge-item strong {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  /* ── CASE GRID ── */
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── CASE CARD ── */
+  .case-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    position: relative;
+  }
+
+  .case-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .case-card[data-setting="heli"] { --card-accent: var(--heli); }
+  .case-card[data-setting="disaster"] { --card-accent: var(--disaster); }
+  .case-card[data-setting="hospital"] { --card-accent: var(--hospital); }
+  .case-card[data-setting="home"] { --card-accent: var(--home); }
+  .case-card[data-setting="outpatient"] { --card-accent: var(--outpatient); }
+  .case-card[data-setting="emergency"] { --card-accent: var(--emergency); }
+
+  .case-card:hover { border-color: var(--card-accent); }
+
+  .card-accent-bar {
+    height: 3px;
+    background: var(--card-accent);
+    opacity: 0.8;
+  }
+
+  .card-body {
+    padding: 22px 24px 20px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card-setting {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--card-accent) 15%, transparent);
+    color: var(--card-accent);
+    text-transform: uppercase;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 30%, transparent);
+    white-space: nowrap;
+  }
+
+  .card-difficulty {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-left: auto;
+  }
+
+  .card-difficulty.hard { color: var(--accent-red); }
+  .card-difficulty.medium { color: var(--accent-orange); }
+  .card-difficulty.easy { color: var(--accent-green); }
+
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .card-scenario {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 12px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .card-pocus {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: 6px;
+    font-size: 11px;
+  }
+
+  .card-pocus-label {
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .card-pocus-views {
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .card-pocus-key {
+    color: var(--card-accent);
+    font-weight: 700;
+  }
+
+  /* available / coming soon */
+  .case-card.available .card-num::after {
+    content: ' ✓';
+    color: var(--accent-green);
+  }
+
+  .case-card.coming .card-body {
+    opacity: 0.5;
+  }
+
+  .case-card.coming::after {
+    content: 'COMING SOON';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    background: var(--surface);
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  /* ── KNOWLEDGE REFERENCE PANEL ── */
+  .ref-panel {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .ref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .ref-card h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .ref-list {
+    list-style: none;
+  }
+
+  .ref-list li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .ref-list li:last-child { border-bottom: none; }
+
+  .ref-list li strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ── PROTOCOL QUICK REFERENCE ── */
+  .protocol-section {
+    margin-top: 70px;
+  }
+
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .protocol-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .protocol-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .protocol-icon {
+    font-size: 20px;
+  }
+
+  .protocol-step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    background: rgba(76,201,240,0.1);
+    border-radius: 3px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .step-text strong {
+    color: var(--text-primary);
+  }
+
+  .alert-box {
+    background: rgba(230,57,70,0.1);
+    border: 1px solid rgba(230,57,70,0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--accent-red);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  .info-box {
+    background: rgba(76,201,240,0.08);
+    border: 1px solid rgba(76,201,240,0.2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--accent-blue);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ── POCUS VIEW LEGEND ── */
+  .view-legend {
+    margin-top: 70px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px;
+  }
+
+  .view-legend h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+
+  .view-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .view-item {
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .view-item .view-abbr {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    font-weight: 500;
+  }
+
+  .view-item .view-name {
+    color: var(--text-secondary);
+    margin-top: 3px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: rgba(255,107,53,0.15);
+    border-color: var(--heli);
+    color: var(--heli);
+  }
+
+  .filter-btn[data-filter="disaster"]:hover,
+  .filter-btn[data-filter="disaster"].active {
+    background: rgba(199,125,255,0.15);
+    border-color: var(--disaster);
+    color: var(--disaster);
+  }
+
+  .filter-btn[data-filter="all"]:hover,
+  .filter-btn[data-filter="all"].active {
+    background: rgba(76,201,240,0.15);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid var(--border);
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  footer p {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .footer-refs {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-ref {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 40px 20px 30px; }
+    main { padding: 30px 20px 60px; }
+    .knowledge-banner { padding: 16px 20px; }
+    footer { padding: 20px; }
+    h1 { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-badge">第4回SPL 準決勝対策</div>
+      <h1>POCUS RALLY<br>TRAINING</h1>
+      <p class="header-sub">病院前救護（ドクターヘリ）・災害医療 シナリオ集 ／ Hoppmann 2022 Table4 準拠</p>
+    </div>
+    <div class="header-meta">
+      <div class="version">Ver 2.0 · 2026.05</div>
+      <div class="spec">準決勝形式 × 4ブース対応<br>エコーコメント声出し必須</div>
+    </div>
+  </div>
+</header>
+
+<!-- KNOWLEDGE BANNER -->
+<div class="knowledge-banner">
+  <div class="knowledge-banner-inner">
+    <div class="kb-title">⚡ 必須知識</div>
+    <div class="kb-tags">
+      <span class="kb-tag">eFAST / FAST</span>
+      <span class="kb-tag">RUSH exam</span>
+      <span class="kb-tag">BLUEプロトコル</span>
+      <span class="kb-tag">CAVEATプロトコル</span>
+      <span class="kb-tag">FoCUS</span>
+      <span class="kb-tag">IVC虚脱 / 拡大</span>
+      <span class="kb-tag">Lung sliding消失</span>
+      <span class="kb-tag">Dシェイプ</span>
+      <span class="kb-tag">心タンポナーデ</span>
+      <span class="kb-tag">大動脈瘤 / 解離</span>
+      <span class="kb-tag">DVTスクリーニング</span>
+      <span class="kb-tag">クラッシュ症候群</span>
+      <span class="kb-tag">たこつぼ心筋症</span>
+      <span class="kb-tag">Bライン</span>
+      <span class="kb-tag">REBOA適応</span>
+      <span class="kb-tag">RT-MUS</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="filterCards('all', this)">すべて表示</button>
+    <button class="filter-btn" data-filter="heli" onclick="filterCards('heli', this)">🚁 ドクターヘリ</button>
+    <button class="filter-btn" data-filter="disaster" onclick="filterCards('disaster', this)">🌊 災害医療</button>
+    <button class="filter-btn" data-filter="emergency" onclick="filterCards('emergency', this)">🏥 救急</button>
+  </div>
+
+  <!-- ===================== SECTION 1: ドクターヘリ ===================== -->
+  <div class="section-heading">
+    <span class="section-icon">🚁</span>
+    <span class="section-title" style="color: var(--heli);">ドクターヘリ・病院前救護</span>
+    <div class="section-divider"></div>
+    <span class="section-count">CASE 01–12</span>
+  </div>
+
+  <!-- HELI KNOWLEDGE BLOCK -->
+  <div class="knowledge-block">
+    <h3>🚁 病院前救護・ドクターヘリ特有の注意点</h3>
+    <div class="knowledge-grid">
+      <div class="knowledge-item">
+        <strong>⏱ 10分ルール</strong>
+        現場滞在は原則10分以内。エコーは必要最小限のビュー（2-リージョン法）を迅速に。
+      </div>
+      <div class="knowledge-item">
+        <strong>🔊 聴診不可</strong>
+        エンジン騒音で聴診困難。肺・心エコーが聴診の代替となる。呼吸音はエコーで視覚的評価。
+      </div>
+      <div class="knowledge-item">
+        <strong>📳 振動アーチファクト</strong>
+        機体振動により偽像が生じうる。Lung slidingの判断に注意。Mモードを活用。
+      </div>
+      <div class="knowledge-item">
+        <strong>🏥 搬送先選定</strong>
+        POCUSで心タンポナーデ・大量血胸・腹腔内出血を確認→ 専門センター（外傷・心臓外科）へ直接搬送。
+      </div>
+      <div class="knowledge-item">
+        <strong>🩸 REBOA適応</strong>
+        骨盤骨折+腹腔内出血でFASTが陽性→ REBOA留置を検討。大動脈エコーで確認。
+      </div>
+      <div class="knowledge-item">
+        <strong>📡 RT-MUS</strong>
+        現場画像をリアルタイムで病院専門医に送信。遠隔診断支援（Remote Tele Medical Ultrasound）。
+      </div>
+      <div class="knowledge-item">
+        <strong>🔋 機材</strong>
+        バッテリー駆動のポータブル超音波装置使用。プリセット活用（D4.50）。深さ・ゲイン調整（D4.51-D4.54）。
+      </div>
+      <div class="knowledge-item">
+        <strong>🎯 プロトコル優先</strong>
+        eFAST（外傷）、RUSH exam（ショック）、BLUEプロトコル（呼吸困難）を状況に応じて選択。
+      </div>
+    </div>
+  </div>
+
+  <div class="case-grid">
+
+    <!-- CASE H-01 -->
+    <a class="case-card available" data-setting="heli" href="case_h01.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-01</div>
+        <div class="card-title">交通外傷・腹腔内出血（eFAST陽性）</div>
+        <div class="card-scenario">40代男性、バイク対自動車。現場でGCS低下、頻脈・低血圧。腹壁打撲痕あり。搬送中ヘリ内でeFAST施行。</div>
+        <div class="card-tags">
+          <span class="card-tag">外傷性ショック</span>
+          <span class="card-tag">eFAST</span>
+          <span class="card-tag">脾損傷</span>
+          <span class="card-tag">循環血液量減少</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            FAST（4点）、<span class="card-pocus-key">モリソン窩陽性</span>、肺エコー、IVC虚脱
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-02 -->
+    <a class="case-card available" data-setting="heli" href="case_h02.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-02</div>
+        <div class="card-title">高所転落・緊張性気胸</div>
+        <div class="card-scenario">50代男性、建設現場から5m転落。右胸部打撲、SpO2 85%、頸静脈怒張。呼吸数28回/分。</div>
+        <div class="card-tags">
+          <span class="card-tag">閉塞性ショック</span>
+          <span class="card-tag">気胸</span>
+          <span class="card-tag">緊急脱気</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺エコー（<span class="card-pocus-key">Lung sliding消失</span>）、心窩部心エコー（頸静脈怒張）、IVC拡大
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-03 -->
+    <a class="case-card available" data-setting="heli" href="case_h03.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-03</div>
+        <div class="card-title">刺傷・心タンポナーデ</div>
+        <div class="card-scenario">30代男性、胸部刺傷。脈拍触知困難、頸静脈怒張、心音遠く聴取。ベック三徴候。</div>
+        <div class="card-tags">
+          <span class="card-tag">閉塞性ショック</span>
+          <span class="card-tag">心タンポナーデ</span>
+          <span class="card-tag">心膜穿刺</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">心窩部（セクタ）→心嚢液貯留</span>、右室虚脱、IVC拡大
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-04 -->
+    <a class="case-card available" data-setting="heli" href="case_h04.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-04</div>
+        <div class="card-title">院外心停止・蘇生後（PE疑い）</div>
+        <div class="card-scenario">60代女性、公共施設で突然倒れROSC後。長時間臥床歴。右下肢浮腫。心拍数120、BP80/40。</div>
+        <div class="card-tags">
+          <span class="card-tag">肺塞栓症</span>
+          <span class="card-tag">DVT</span>
+          <span class="card-tag">右心負荷</span>
+          <span class="card-tag">RUSH</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            A4C（<span class="card-pocus-key">Dシェイプ・右室拡大</span>）、DVT（膝窩静脈圧迫法）、IVC拡大
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-05 -->
+    <a class="case-card available" data-setting="heli" href="case_h05.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-05</div>
+        <div class="card-title">腹部大動脈瘤破裂</div>
+        <div class="card-scenario">72代男性、自宅で突然の激烈な腰背部痛。BP70/40、脈拍120。腹部に拍動性腫瘤触知。</div>
+        <div class="card-tags">
+          <span class="card-tag">血管性ショック</span>
+          <span class="card-tag">AAA破裂</span>
+          <span class="card-tag">循環血液量減少</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">腹部大動脈（横断・縦断）→5cm以上拡大</span>、FAST（腹腔内出血）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-06 -->
+    <a class="case-card available" data-setting="heli" href="case_h06.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-06</div>
+        <div class="card-title">骨盤骨折＋REBOA適応</div>
+        <div class="card-scenario">25代男性、オートバイ外傷。骨盤変形、下肢感覚消失。eFASTで腹腔内出血。BP60台で輸液反応不良。</div>
+        <div class="card-tags">
+          <span class="card-tag">骨盤骨折</span>
+          <span class="card-tag">REBOA</span>
+          <span class="card-tag">外傷性ショック</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            eFAST（<span class="card-pocus-key">モリソン窩・膀胱周囲液体貯留</span>）、大動脈バルーン位置確認
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-07 -->
+    <a class="case-card available" data-setting="heli" href="case_h07.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-07</div>
+        <div class="card-title">急性心筋梗塞・ショック（AMI）</div>
+        <div class="card-scenario">65代男性、農作業中に胸痛・冷汗。BP90/60、脈拍110。心電図ST上昇（II, III, aVF）。</div>
+        <div class="card-tags">
+          <span class="card-tag">下壁AMI</span>
+          <span class="card-tag">心原性ショック</span>
+          <span class="card-tag">MONA</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            A4C・PLAX（<span class="card-pocus-key">下壁・後壁壁運動低下</span>）、IVC、肺Bライン
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-08 -->
+    <a class="case-card available" data-setting="heli" href="case_h08.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-08</div>
+        <div class="card-title">Stanford A型大動脈解離</div>
+        <div class="card-scenario">58代男性、突然の引き裂かれる胸背部痛。左右血圧差20mmHg。意識清明。心電図正常。</div>
+        <div class="card-tags">
+          <span class="card-tag">大動脈解離</span>
+          <span class="card-tag">Type A</span>
+          <span class="card-tag">心臓外科</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            PLAX長軸（<span class="card-pocus-key">上行大動脈フラップ・心タンボ合併</span>）、大動脈弁逆流
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-09 -->
+    <a class="case-card available" data-setting="heli" href="case_h09.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-09</div>
+        <div class="card-title">溺水・重症肺炎（農業池）</div>
+        <div class="card-scenario">45代男性、農業用ため池に転落。引き上げ後意識朦朧。SpO2 80%、頻呼吸。体温35.2°C。</div>
+        <div class="card-tags">
+          <span class="card-tag">溺水</span>
+          <span class="card-tag">低体温</span>
+          <span class="card-tag">吸引性肺炎</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺エコー（<span class="card-pocus-key">両側Bライン・肺実質化</span>）、心エコー（壁運動）、IVC
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-10 -->
+    <a class="case-card available" data-setting="heli" href="case_h10.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-10</div>
+        <div class="card-title">熱中症（重症）・循環不全</div>
+        <div class="card-scenario">75代男性、夏季農作業。体温40.5°C、GCS 11点、発汗なし（熱射病）。BP80/50、頻脈140。</div>
+        <div class="card-tags">
+          <span class="card-tag">熱射病</span>
+          <span class="card-tag">循環不全</span>
+          <span class="card-tag">脱水</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            IVC（<span class="card-pocus-key">虚脱→循環血液量減少</span>）、心エコー（過収縮）、腎エコー
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-11 -->
+    <a class="case-card available" data-setting="heli" href="case_h11.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE H-11</div>
+        <div class="card-title">山岳遭難・外傷性出血（多発骨折）</div>
+        <div class="card-scenario">38代男性、登山道から滑落。右大腿骨開放骨折、頭部外傷。搬送困難地形。GCS 12、頻脈120。</div>
+        <div class="card-tags">
+          <span class="card-tag">多発外傷</span>
+          <span class="card-tag">開放骨折</span>
+          <span class="card-tag">頭部外傷</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            eFAST（頭蓋内は限界）、<span class="card-pocus-key">大腿骨骨折エコー確認</span>、FAST（腹腔内）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE H-12 -->
+    <a class="case-card available" data-setting="heli" href="case_h12.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">ドクターヘリ</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE H-12</div>
+        <div class="card-title">妊婦・腹部外傷（FAST優先）</div>
+        <div class="card-scenario">32代女性（妊娠28週）、自動車後突事故。腹部痛・子宮収縮。BP95/60。胎動減弱を訴える。</div>
+        <div class="card-tags">
+          <span class="card-tag">妊婦外傷</span>
+          <span class="card-tag">胎盤早期剥離</span>
+          <span class="card-tag">外傷FAST</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            FAST（<span class="card-pocus-key">子宮周囲液体貯留・胎盤肥厚</span>）、胎児心拍確認、IVC
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div><!-- /case-grid heli -->
+
+  <!-- ===================== SECTION 2: 災害医療 ===================== -->
+  <div class="section-heading">
+    <span class="section-icon">🌊</span>
+    <span class="section-title" style="color: var(--disaster);">災害医療</span>
+    <div class="section-divider"></div>
+    <span class="section-count">CASE D-01–14</span>
+  </div>
+
+  <!-- DISASTER KNOWLEDGE BLOCK -->
+  <div class="knowledge-block">
+    <h3>🌊 災害医療特有の知識・エコーの役割</h3>
+    <div class="knowledge-grid">
+      <div class="knowledge-item">
+        <strong>📊 CAVEATプロトコル</strong>
+        eFASTにIVC評価・骨折・DVT検索を加えた災害時専用プロトコル。多数傷病者(MCI)トリアージに。
+      </div>
+      <div class="knowledge-item">
+        <strong>🏚 超急性期</strong>
+        心タンポナーデ、大量血胸、腹腔内出血を数分で同定→ 即時救命処置。停電でもバッテリー駆動。
+      </div>
+      <div class="knowledge-item">
+        <strong>🪑 DVTスクリーニング</strong>
+        避難所・車中泊→ エコノミークラス症候群が急増。膝窩静脈圧迫法による集団スクリーニングが重要。
+      </div>
+      <div class="knowledge-item">
+        <strong>💔 たこつぼ心筋症</strong>
+        災害ストレスで増加。FoCUSで心尖部壁運動消失・基部収縮良好のパターンを確認。
+      </div>
+      <div class="knowledge-item">
+        <strong>💪 クラッシュ症候群</strong>
+        長時間挟圧後の筋細胞崩壊。腎血流RI値測定・IVC管理で透析適応・補液量を判断。
+      </div>
+      <div class="knowledge-item">
+        <strong>🌬 肺水腫・感染</strong>
+        避難所生活→ 心不全増悪・肺炎。Bライン（肺水腫）・肺実質化（肺炎）を鑑別。
+      </div>
+      <div class="knowledge-item">
+        <strong>☢ CBRNE対応</strong>
+        防護服下での身体診察補完にエコー。聴診・触診制限下でも心肺評価が可能。
+      </div>
+      <div class="knowledge-item">
+        <strong>🔋 インフラ途絶環境</strong>
+        X線・CT使用不可。エコーが唯一の画像診断ツール。プリセット設定の事前確認が必須。
+      </div>
+    </div>
+  </div>
+
+  <div class="case-grid">
+
+    <!-- CASE D-01 -->
+    <a class="case-card available" data-setting="disaster" href="case_d01.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-01</div>
+        <div class="card-title">地震・建物倒壊圧挫（クラッシュ症候群）</div>
+        <div class="card-scenario">55代男性、地震で倒壊家屋の下に4時間。救助後、尿が赤褐色。BP110/70、腎機能急速悪化。</div>
+        <div class="card-tags">
+          <span class="card-tag">クラッシュ症候群</span>
+          <span class="card-tag">横紋筋融解症</span>
+          <span class="card-tag">急性腎障害</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            腎エコー（<span class="card-pocus-key">両側腎腫大・血流RI値上昇</span>）、IVC（補液管理）、FAST
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-02 -->
+    <a class="case-card available" data-setting="disaster" href="case_d02.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-02</div>
+        <div class="card-title">避難所でのDVT・肺塞栓疑い</div>
+        <div class="card-scenario">68代女性、震災後の避難所生活7日目。突然の呼吸困難・右下肢腫脹。SpO2 90%、HR 110。</div>
+        <div class="card-tags">
+          <span class="card-tag">エコノミークラス症候群</span>
+          <span class="card-tag">DVT</span>
+          <span class="card-tag">肺塞栓症</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            膝窩静脈（<span class="card-pocus-key">圧迫法→虚脱しない</span>）、A4C（Dシェイプ）、IVC拡大
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-03 -->
+    <a class="case-card available" data-setting="disaster" href="case_d03.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-03</div>
+        <div class="card-title">たこつぼ心筋症（心理的ストレス）</div>
+        <div class="card-scenario">70代女性、地震後のストレスで急性胸痛・呼吸困難。ECGでST変化。トロポニン軽度上昇。AMIとの鑑別が課題。</div>
+        <div class="card-tags">
+          <span class="card-tag">たこつぼ心筋症</span>
+          <span class="card-tag">ストレス心筋症</span>
+          <span class="card-tag">AMI鑑別</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            A4C（<span class="card-pocus-key">心尖部無収縮・基部収縮良好</span>）、PLAX（駆出率低下）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-04 -->
+    <a class="case-card available" data-setting="disaster" href="case_d04.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-04</div>
+        <div class="card-title">多数傷病者（MCI）トリアージ・CAVEAT</div>
+        <div class="card-scenario">地震現場、5名同時搬送。各傷病者に対しCAVEATプロトコルを5分以内で施行し優先順位を決定する。</div>
+        <div class="card-tags">
+          <span class="card-tag">MCI</span>
+          <span class="card-tag">CAVEATプロトコル</span>
+          <span class="card-tag">トリアージ</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">eFAST → IVC → DVT の迅速評価順序</span>を体得する
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-05 -->
+    <a class="case-card available" data-setting="disaster" href="case_d05.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-05</div>
+        <div class="card-title">津波被災・溺水＋低体温</div>
+        <div class="card-scenario">45代男性、津波後泥水中から救出。体温32°C、SpO2 84%、呼吸数6回/分。GCS 8。心電図でJ波。</div>
+        <div class="card-tags">
+          <span class="card-tag">溺水</span>
+          <span class="card-tag">低体温症</span>
+          <span class="card-tag">J波（Osborn波）</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺（<span class="card-pocus-key">両側Bライン・肺実質化</span>）、心エコー（低体温性心不全）、IVC
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-06 -->
+    <a class="case-card available" data-setting="disaster" href="case_d06.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-06</div>
+        <div class="card-title">避難所肺炎（誤嚥性）→敗血症</div>
+        <div class="card-scenario">82代女性、避難所生活10日目。発熱39°C、SpO2 88%。qSOFA 2点。誤嚥歴あり。</div>
+        <div class="card-tags">
+          <span class="card-tag">誤嚥性肺炎</span>
+          <span class="card-tag">敗血症</span>
+          <span class="card-tag">qSOFA</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺（<span class="card-pocus-key">右下肺実質化・胸水</span>）、IVC（敗血症性ショック）、心エコー
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-07 -->
+    <a class="case-card available" data-setting="disaster" href="case_d07.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-07</div>
+        <div class="card-title">地震外傷・腸管損傷（FAST陽性）</div>
+        <div class="card-scenario">40代男性、倒壊建物の梁が腹部直撃。腹膜刺激症状あり。BP85/50、腹部硬直。緊急手術適応判断。</div>
+        <div class="card-tags">
+          <span class="card-tag">腸管損傷</span>
+          <span class="card-tag">腹腔内出血</span>
+          <span class="card-tag">緊急開腹</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            FAST（<span class="card-pocus-key">モリソン窩・脾周囲・膀胱周囲陽性</span>）、IVC虚脱
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-08 -->
+    <a class="case-card available" data-setting="disaster" href="case_d08.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-08</div>
+        <div class="card-title">慢性心不全急性増悪（避難所）</div>
+        <div class="card-scenario">76代男性、心不全既往、避難所の低温環境・過労。急性呼吸困難、両下腿浮腫、起坐呼吸。</div>
+        <div class="card-tags">
+          <span class="card-tag">急性心不全</span>
+          <span class="card-tag">肺水腫</span>
+          <span class="card-tag">体液過剰</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺（<span class="card-pocus-key">両側びまん性Bライン</span>）、A4C（EF低下）、IVC拡大・呼吸変動消失
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-09 -->
+    <a class="case-card available" data-setting="disaster" href="case_d09.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-09</div>
+        <div class="card-title">化学災害（CBRNE）・防護服下評価</div>
+        <div class="card-scenario">工場爆発、有毒ガス漏洩。レベルB防護服着用下での患者評価。聴診・触診が制限。SpO2 82%、頻脈。</div>
+        <div class="card-tags">
+          <span class="card-tag">CBRNE</span>
+          <span class="card-tag">化学災害</span>
+          <span class="card-tag">防護服下評価</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">防護服下でのエコー操作</span>、肺（気胸除外）、心（収縮能）、IVC
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-10 -->
+    <a class="case-card available" data-setting="disaster" href="case_d10.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-10</div>
+        <div class="card-title">倒壊家屋・脊椎外傷疑い＋血胸</div>
+        <div class="card-scenario">62代男性、天井崩落で頸部打撲・上肢脱力。搬送中に呼吸困難が増悪。SpO2 91%、右呼吸音減弱。</div>
+        <div class="card-tags">
+          <span class="card-tag">脊椎外傷</span>
+          <span class="card-tag">血胸</span>
+          <span class="card-tag">神経原性ショック</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            eFAST（<span class="card-pocus-key">右胸腔液体貯留・Lung point</span>）、IVC（神経原性ショック）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-11 -->
+    <a class="case-card available" data-setting="disaster" href="case_d11.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-11</div>
+        <div class="card-title">車中泊・高齢者脱水＋DVT</div>
+        <div class="card-scenario">80代女性、被災後の車中泊5日目。下肢痛・腫脹。尿量低下。意識清明だが脱力感。口腔内乾燥。</div>
+        <div class="card-tags">
+          <span class="card-tag">脱水</span>
+          <span class="card-tag">DVT</span>
+          <span class="card-tag">高齢者</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            膝窩静脈（<span class="card-pocus-key">圧迫法でDVT確認</span>）、IVC（脱水評価）、膀胱エコー（尿量）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-12 -->
+    <a class="case-card available" data-setting="disaster" href="case_d12.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-12</div>
+        <div class="card-title">爆傷（ブラスト損傷）・肺挫傷</div>
+        <div class="card-scenario">35代男性、工場爆発で爆風曝露。外見上の損傷は軽微だが、進行する呼吸困難。爆傷による肺挫傷。</div>
+        <div class="card-tags">
+          <span class="card-tag">ブラスト外傷</span>
+          <span class="card-tag">肺挫傷</span>
+          <span class="card-tag">一次爆傷</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            肺（<span class="card-pocus-key">両側コメット様Bライン・局所Lung point</span>）、心（心挫傷除外）
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-13 -->
+    <a class="case-card available" data-setting="disaster" href="case_d13.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty medium">★★☆ 中難度</span>
+        </div>
+        <div class="card-num">CASE D-13</div>
+        <div class="card-title">RT-MUS実践（遠隔超音波支援）</div>
+        <div class="card-scenario">離島・通信あり環境での重症患者評価。エコー画像をリアルタイム送信し、専門医の遠隔指示下でプローブを操作する。</div>
+        <div class="card-tags">
+          <span class="card-tag">RT-MUS</span>
+          <span class="card-tag">遠隔医療</span>
+          <span class="card-tag">離島医療</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">遠隔指示下での全ビュー実施</span>・コメント音声送信の練習
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CASE D-14 -->
+    <a class="case-card available" data-setting="disaster" href="case_d14.html">
+      <div class="card-accent-bar"></div>
+      <div class="card-body">
+        <div class="card-header">
+          <span class="card-setting">災害医療</span>
+          <span class="card-difficulty hard">★★★ 高難度</span>
+        </div>
+        <div class="card-num">CASE D-14</div>
+        <div class="card-title">産科救急（災害現場・分娩困難）</div>
+        <div class="card-scenario">28代女性（妊娠38週）、被災後の避難所で陣痛開始。産科設備なし。胎位・胎盤確認のためエコー施行。</div>
+        <div class="card-tags">
+          <span class="card-tag">産科救急</span>
+          <span class="card-tag">胎位異常</span>
+          <span class="card-tag">胎盤前置</span>
+        </div>
+        <div class="card-pocus">
+          <span class="card-pocus-label">POCUS</span>
+          <span class="card-pocus-views">
+            <span class="card-pocus-key">胎位確認（頭位/骨盤位）</span>、胎盤付着部位、胎児心拍数
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div><!-- /case-grid disaster -->
+
+  <!-- ===================== PROTOCOL QUICK REFERENCE ===================== -->
+  <div class="protocol-section">
+    <div class="section-heading">
+      <span class="section-icon">📋</span>
+      <span class="section-title">プロトコル早見表</span>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="protocol-grid">
+
+      <!-- eFAST -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">🔴</span> eFAST（外傷）</h4>
+        <div class="protocol-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>心窩部</strong>：心嚢液（心タンポナーデ）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>右上腹部</strong>：モリソン窩（肝腎間隙）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>左上腹部</strong>：脾腎間隙（コーレン間隙）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>骨盤</strong>：膀胱直腸窩（ダグラス窩）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">5</div>
+          <div class="step-text"><strong>両側前胸部</strong>：Lung sliding（気胸）</div>
+        </div>
+        <div class="alert-box">⚠ 受傷直後は偽陰性あり。バイタルと受傷機転を総合判断。</div>
+      </div>
+
+      <!-- RUSH -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">🔵</span> RUSH exam（ショック）</h4>
+        <div class="protocol-step">
+          <div class="step-num">PUMP</div>
+          <div class="step-text"><strong>心エコー</strong>：収縮能、心タンポナーデ、右室拡大</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">TANK</div>
+          <div class="step-text"><strong>IVC</strong>：虚脱→循環血液量減少、拡大→閉塞性/心原性</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">TANK</div>
+          <div class="step-text"><strong>肺エコー</strong>：Bライン→心原性肺水腫、sliding消失→気胸</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">PIPE</div>
+          <div class="step-text"><strong>大動脈・FAST</strong>：AAA、腹腔内出血</div>
+        </div>
+        <div class="info-box">ℹ ドクターヘリでは聴診不可のため PUMP→TANKが第一。</div>
+      </div>
+
+      <!-- BLUE -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">🟣</span> BLUEプロトコル（呼吸困難）</h4>
+        <div class="protocol-step">
+          <div class="step-num">A</div>
+          <div class="step-text"><strong>前胸部上部</strong>：BLUE点・PLAPS点を確認</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">B</div>
+          <div class="step-text">Lung sliding <strong>あり</strong> + Aライン → 正常 or PE</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">C</div>
+          <div class="step-text">Lung sliding <strong>あり</strong> + 両側Bライン → 肺水腫</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">D</div>
+          <div class="step-text">Lung sliding <strong>なし</strong> + Aライン → 気胸</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">E</div>
+          <div class="step-text">片側Bライン + 実質化 → 肺炎</div>
+        </div>
+      </div>
+
+      <!-- CAVEAT -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">🟠</span> CAVEATプロトコル（災害）</h4>
+        <div class="protocol-step">
+          <div class="step-num">C</div>
+          <div class="step-text"><strong>Cardiac</strong>：心エコー（タンポナーデ、壁運動）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">A</div>
+          <div class="step-text"><strong>Aorta</strong>：腹部大動脈（AAA）</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">V</div>
+          <div class="step-text"><strong>Vena cava</strong>：IVC径・呼吸変動</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">E</div>
+          <div class="step-text"><strong>eFAST</strong>：腹腔内・胸腔内出血、気胸</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">A</div>
+          <div class="step-text"><strong>Ankles/DVT</strong>：膝窩静脈圧迫法</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">T</div>
+          <div class="step-text"><strong>Trauma/骨折</strong>：長管骨・肋骨骨折エコー</div>
+        </div>
+        <div class="alert-box">⚠ MCI時は1名5分以内で完了。優先はCとeFAST。</div>
+      </div>
+
+      <!-- IVC判読 -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">💧</span> IVC判読まとめ</h4>
+        <div class="protocol-step">
+          <div class="step-num">↓</div>
+          <div class="step-text"><strong>虚脱（&lt;10mm）</strong>：循環血液量減少 → 輸液適応</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">↔</div>
+          <div class="step-text"><strong>正常（10-20mm、呼吸変動あり）</strong>：正常補液状態</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">↑</div>
+          <div class="step-text"><strong>拡大（&gt;21mm、変動消失）</strong>：右心負荷 / 閉塞性ショック</div>
+        </div>
+        <div class="info-box">ℹ ドクターヘリでは呼吸変動が振動で見えにくい場合あり。絶対径も参考に。</div>
+      </div>
+
+      <!-- ショック鑑別 -->
+      <div class="protocol-card">
+        <h4><span class="protocol-icon">⚡</span> エコーによるショック鑑別</h4>
+        <div class="protocol-step">
+          <div class="step-num">Ⅰ</div>
+          <div class="step-text"><strong>循環血液量減少性</strong>：IVC虚脱、Bライン(-)、壁運動↑</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">Ⅱ</div>
+          <div class="step-text"><strong>心原性</strong>：IVC拡大、Bライン(+)、壁運動↓、EF低下</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">Ⅲ</div>
+          <div class="step-text"><strong>閉塞性（PE）</strong>：IVC拡大、右室拡大、Dシェイプ、DVT(+)</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">Ⅳ</div>
+          <div class="step-text"><strong>閉塞性（タンポ）</strong>：心嚢液、右室虚脱、IVC拡大</div>
+        </div>
+        <div class="protocol-step">
+          <div class="step-num">Ⅴ</div>
+          <div class="step-text"><strong>分布異常性</strong>：IVC虚脱/正常、壁運動↑、Bライン(-)</div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /protocol-section -->
+
+  <!-- ===================== POCUS VIEW LEGEND ===================== -->
+  <div class="view-legend">
+    <h3>資料3 対応エコービュー一覧</h3>
+    <div class="view-legend-grid">
+      <div class="view-item">
+        <div class="view-abbr">PLAX</div>
+        <div class="view-name">傍胸骨長軸像<br>大動脈弁・僧帽弁・LV</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">PSAX</div>
+        <div class="view-name">傍胸骨短軸像<br>Dシェイプ・乳頭筋レベル</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">A4C</div>
+        <div class="view-name">心尖部四腔断面<br>EF・右室拡大・弁評価</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">IVC</div>
+        <div class="view-name">下大静脈（横断・縦断）<br>呼吸変動・径</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">eFAST</div>
+        <div class="view-name">外傷FAST（拡張版）<br>+両側気胸評価</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">LUNG</div>
+        <div class="view-name">肺エコー（前胸・側胸）<br>Bライン・Sliding・実質化</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">AO</div>
+        <div class="view-name">腹部大動脈（横断・縦断）<br>径・解離フラップ</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">GB</div>
+        <div class="view-name">胆嚢<br>胆石・胆嚢炎・Murphy sign</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">KID</div>
+        <div class="view-name">腎臓（両側）<br>水腎症・血流RI値</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">DVT</div>
+        <div class="view-name">膝窩静脈（圧迫法）<br>2 region test</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">KNEE</div>
+        <div class="view-name">膝（膝蓋上囊）<br>関節液・CPPD結晶</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">SHLDR</div>
+        <div class="view-name">肩（上腕二頭筋長頭腱）<br>腱炎・滑液包炎</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">THYR</div>
+        <div class="view-name">甲状腺（縦断・横断）<br>結節・炎症</div>
+      </div>
+      <div class="view-item">
+        <div class="view-abbr">BLD</div>
+        <div class="view-name">膀胱（縦断・横断）<br>尿量・閉塞</div>
+      </div>
+    </div>
+  </div><!-- /view-legend -->
+
+  <!-- ===================== DISEASE REFERENCE ===================== -->
+  <div class="section-heading" style="margin-top: 70px;">
+    <span class="section-icon">📚</span>
+    <span class="section-title">疾患知識リファレンス</span>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="ref-panel">
+
+    <div class="ref-card">
+      <h4>🚁 ヘリ特有・見逃し禁止疾患</h4>
+      <ul class="ref-list">
+        <li><strong>心タンポナーデ</strong>：ベック三徴（低血圧・頸静脈怒張・心音減弱）→ セクタで心嚢液確認→ 心膜穿刺</li>
+        <li><strong>緊張性気胸</strong>：Lung sliding消失→ 即時脱気（第2肋間鎖骨中線）</li>
+        <li><strong>大量血胸</strong>：外傷 + 呼吸音減弱 → eFAST胸腔液体確認</li>
+        <li><strong>腹腔内出血</strong>：FAST陽性 + ショック → 専門センター直搬</li>
+        <li><strong>Stanford A解離</strong>：左右血圧差 + 胸背部痛 → 長軸でフラップ確認</li>
+        <li><strong>PE + 右室拡大</strong>：ROSC後 + DVT → Dシェイプ確認→ ヘパリン</li>
+      </ul>
+    </div>
+
+    <div class="ref-card">
+      <h4>🌊 災害特有疾患</h4>
+      <ul class="ref-list">
+        <li><strong>クラッシュ症候群</strong>：長時間挟圧 → ミオグロビン尿（赤褐色）→ 腎保護輸液（生食1L/h）</li>
+        <li><strong>たこつぼ心筋症</strong>：心尖部無収縮 + 基部収縮良好 + ストレス歴</li>
+        <li><strong>エコノミークラス症候群</strong>：避難所生活 → DVT → PE。予防は足首運動。</li>
+        <li><strong>誤嚥性肺炎</strong>：高齢者 + 避難所 → 右下葉実質化 → セフトリアキソン</li>
+        <li><strong>低体温症</strong>：体温&lt;32°C → J波(Osborn波)→ 能動的加温、VF注意</li>
+        <li><strong>溺水</strong>：両側Bライン + 実質化 → ALI/ARDS → 保護的換気</li>
+      </ul>
+    </div>
+
+    <div class="ref-card">
+      <h4>📊 ショック分類と初期対応</h4>
+      <ul class="ref-list">
+        <li><strong>循環血液量減少性</strong>：輸液（細胞外液500-1000mL）→ 反応性確認</li>
+        <li><strong>心原性</strong>：利尿薬、強心薬。輸液は禁忌。専門科コンサル。</li>
+        <li><strong>閉塞性（気胸）</strong>：即時脱気→ 胸腔ドレナージ。輸液は不要。</li>
+        <li><strong>閉塞性（タンポ）</strong>：心膜穿刺→ 輸液禁忌。</li>
+        <li><strong>閉塞性（PE）</strong>：酸素化、ヘパリン（静注）。輸液慎重に。</li>
+        <li><strong>分布異常性（敗血症）</strong>：輸液 + 抗菌薬（1時間以内）+ 昇圧薬</li>
+      </ul>
+    </div>
+
+    <div class="ref-card">
+      <h4>🩺 エコーコメント（声出し）例</h4>
+      <ul class="ref-list">
+        <li><strong>PLAX</strong>：「傍胸骨長軸、大動脈弁・僧帽弁の開閉を確認。左室収縮能を評価します」</li>
+        <li><strong>IVC</strong>：「IVC縦断像で径と呼吸変動を確認。…mm、呼吸変動[あり/なし]」</li>
+        <li><strong>Lung</strong>：「前胸部でLung slidingを確認。[あり/なし]。Bライン[あり/なし]」</li>
+        <li><strong>FAST</strong>：「モリソン窩で液体貯留を確認。[陽性/陰性]」</li>
+        <li><strong>DVT</strong>：「膝窩静脈で圧迫法を施行。[虚脱する/虚脱しない→DVT疑い]」</li>
+        <li><strong>AO</strong>：「腹部大動脈横断で径を測定。[正常/…cm拡大]」</li>
+      </ul>
+    </div>
+
+  </div><!-- /ref-panel -->
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>第4回SPL 準決勝 POCUS Training System · 2026</p>
+  <div class="footer-refs">
+    <span class="footer-ref">Based on: Hoppmann 2022 Table4</span>
+    <span class="footer-ref">資料3 エコー試技チェックリスト</span>
+    <span class="footer-ref">SPL症候プロトコル</span>
+  </div>
+</footer>
+
+<script>
+  function filterCards(setting, btn) {
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.case-card');
+    cards.forEach(card => {
+      if (setting === 'all') {
+        card.style.display = '';
+      } else {
+        card.style.display = card.dataset.setting === setting ? '' : 'none';
+      }
+    });
+
+    // Show/hide section headings
+    const heliSection = document.querySelector('[data-section="heli"]');
+    const disasterSection = document.querySelector('[data-section="disaster"]');
+  }
+
+  // Fade in cards on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.case-card');
+    cards.forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(16px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, box-shadow 0.2s';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, i * 30);
+    });
+  });
+</script>
+
+</body>
+</html>
